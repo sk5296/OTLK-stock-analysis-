@@ -1,0 +1,50 @@
+5-Year Stock Price Trend 
+Outlook Therapeutics 는 일반적인 실적 성장주가 아닌 , FDA 승인 , 임상 , 실매출 결과에 따라 주가가 크게 움직이는 고위험 바이오주입니다.
+2021 - 2026 OTLK 의 대표적인 이슈는  습성 황반변성 치료제 ONS-5010의 FDA 승인 여부 , 제조 관련 심사 실패 , 반복적인 자금 조달과 주식 희석 입니다.
+5년전 주가 기준 수익률은 -98.27%로 $40달러였던 주가가 현재 $1달러를 밑돌고 있습니다. 
+그 이유로는 2021 11월 자금조달로 인한 기존 주주의 주가 희석 , 2023 8월 FDA 승인 거절로 인한 주가 대폭락 , 2024년 11월 임상실험 실패 ,2025년 8월 FDA 승인 2차 거절입니다 . 
+2025년 12월 3차시도 끝에 2026년 7월 FDA 승인 결정 , 하지만 현재 누적 결손금 6-7억달러 신주 및 워런트 발행에 따른 주가 희석 가능성으로 $1달러를 밑돌고 있습니다.
+
+
+
+events = {"2023 FDA CRL": "2023-08-30"
+          "2024 NORSE EIGHT": "2024-11-27"
+          "2025 FDA CRL": "2025-08-28"
+          "2025 Third CRL": "2025-12-30"
+          "2026 FDA Approval": "2026-07-24"}
+
+event_results = []
+
+for name, date in events.items():
+
+    event_date = pd.Timestamp(date)
+
+    future = df.index[df.index >= event_date]
+
+    if len(future) == 0:
+        continue
+
+    idx = df.index.get_loc(future[0])
+
+    if idx < 1:
+        continue
+
+    base = df["Close"].iloc[idx - 1]
+
+    result = {"Event": name,
+              "Date": future[0]}
+
+    for days in [1, 5, 20]:
+
+        if idx + days < len(df):
+
+            price = df["Close"].iloc[idx + days]
+
+            result[f"{days}D Return"] = 
+            (price / base - 1) * 100
+
+        else:
+            result[f"{days}D Return"] = np.nan
+
+        event_results.append(result)
+  
